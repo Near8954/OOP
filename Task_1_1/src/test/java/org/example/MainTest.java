@@ -22,7 +22,7 @@ class MainTest {
                 for (int j = 0; j < arraySize; ++j) {
                     given[j] = randomise.nextInt();
                 }
-                Main.heapify(given);
+                heapSort.heapify(given);
                 for (int k = 0; k < given.length / 2 - 1; ++k) {
                     assertTrue(given[k] >= given[k * 2 + 1] && given[k] >= given[k * 2 + 2]);
                 }
@@ -43,7 +43,7 @@ class MainTest {
                 }
                 int[] expected = given.clone();
                 Arrays.sort(expected);
-                Main.heapSort(given);
+                heapSort.heapSort(given);
                 assertArrayEquals(given, expected);
             }
         }

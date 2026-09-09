@@ -16,7 +16,7 @@ public class heapSort {
      * @param n length of array
      */
 
-    private static void siftDown(int[] array, int i, int n) {
+    public static void siftDown(int[] array, int i, int n) {
         int left = i * 2 + 1;
         int right = i * 2 + 2;
         int max = i;
@@ -35,7 +35,7 @@ public class heapSort {
      * Makes heap from given array.
      * @param array given array
      */
-    private static void heapify(int[] array) {
+    public static void heapify(int[] array) {
         int n = array.length;
         for (int i = n / 2 - 1; i >= 0; i--) {
             siftDown(array, i, n);
