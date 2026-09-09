@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    id("jacoco")
 }
 
 group = "org.example"
@@ -25,5 +26,11 @@ tasks {
     withType<JavaExec>().configureEach { defaultCharacterEncoding = "UTF-8" }
     withType<Javadoc>().configureEach { options.encoding = "UTF-8" }
     withType<Test>().configureEach { defaultCharacterEncoding = "UTF-8" }
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(true)
+    }
 }
 
