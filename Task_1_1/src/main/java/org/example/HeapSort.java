@@ -3,11 +3,11 @@ package org.example;
 /**
  * Class for heap sort, which contains all necessary functions.
  */
-public class heapSort {
+public class HeapSort {
     /**
      * Constructor to avoid warning.
      */
-    private heapSort() {}
+    private HeapSort() {}
 
     /**
      * Sifts down element in array to help make heap.
@@ -35,7 +35,7 @@ public class heapSort {
      * Makes heap from given array.
      * @param array given array
      */
-    public static void heapify(int[] array) {
+    private static void heapify(int[] array) {
         int n = array.length;
         for (int i = n / 2 - 1; i >= 0; i--) {
             siftDown(array, i, n);
