@@ -31,6 +31,7 @@ public class HeapSort {
             siftDown(array, max, n);
         }
     }
+
     /**
      * Makes heap from given array.
      * @param array given array
