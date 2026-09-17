@@ -35,8 +35,8 @@ public class Game {
             System.out.println("\nХотите сыграть еще один раунд? (1 - Да, 0 - Нет)");
             String choice = scanner.nextLine();
             if ("0".equals(choice)) {
-                System.out.println("Игра завершена. Итоговый счет -> Вы: " +
-                        playerScore + " | Дилер: " + dealerScore);
+                System.out.println("Игра завершена. Итоговый счет -> Вы: "
+                        + playerScore + " | Дилер: " + dealerScore);
                 break;
             }
         }
@@ -115,14 +115,14 @@ public class Game {
      * @param hideDealerCard parameter which hides dealers cards.
      */
     private void printTable(boolean hideDealerCard) {
-        System.out.println("    Ваши карты: " + player.getHand().toString() +
-                " => " + player.getScore());
+        System.out.println("    Ваши карты: " + player.getHand().toString()
+                + " => " + player.getScore());
         if (hideDealerCard) {
-            System.out.println("    Карты дилера: " +
-                    dealer.getHiddenHandString());
+            System.out.println("    Карты дилера: "
+                    + dealer.getHiddenHandString());
         } else {
-            System.out.println("    Карты дилера: " + dealer.getHand().toString() +
-                    " => " + dealer.getScore());
+            System.out.println("    Карты дилера: " + dealer.getHand().toString()
+                    + " => " + dealer.getScore());
         }
     }
 
@@ -136,16 +136,16 @@ public class Game {
 
         if (playerBust) {
             dealerScore++;
-            System.out.println("\nПеребор! Вы проиграли раунд. Счет " + playerScore +
-                    ":" + dealerScore + " в пользу дилера.");
+            System.out.println("\nПеребор! Вы проиграли раунд. Счет " + playerScore
+                    + ":" + dealerScore + " в пользу дилера.");
         } else if (dScore > 21 || pScore > dScore) {
             playerScore++;
-            System.out.println("\nВы выиграли раунд! Счет " + playerScore +
-                    ":" + dealerScore + " в вашу пользу.");
+            System.out.println("\nВы выиграли раунд! Счет " + playerScore
+                    + ":" + dealerScore + " в вашу пользу.");
         } else if (dScore > pScore) {
             dealerScore++;
-            System.out.println("\nВы проиграли раунд. Счет " + playerScore +
-                    ":" + dealerScore + " в пользу дилера.");
+            System.out.println("\nВы проиграли раунд. Счет " + playerScore
+                    + ":" + dealerScore + " в пользу дилера.");
         } else {
             System.out.println("\nНичья! Счет " + playerScore + ":" + dealerScore);
         }
