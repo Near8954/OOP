@@ -44,7 +44,7 @@ public class Card {
     }
 
     /**
-     * Sets card's current value;
+     * Sets card's current value.
      * @param currentValue new card's value
      */
     public void setCurrentValue(int currentValue) {
