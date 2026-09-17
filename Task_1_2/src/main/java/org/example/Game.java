@@ -94,8 +94,8 @@ public class Game {
         if (!playerBust) {
             System.out.println("\nХод дилера");
             System.out.println("-------");
-            System.out.println("Дилер открывает закрытую карту " +
-                    dealer.getHand().get(1).toString());
+            System.out.println("Дилер открывает закрытую карту "
+                    + dealer.getHand().get(1).toString());
             printTable(false);
 
             while (dealer.getScore() < 17) {
