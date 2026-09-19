@@ -21,7 +21,7 @@ public class Deck {
     }
 
     /**
-     * Shuffles deck.
+     * Shuffles deck with cards.
      */
     public void shuffleDeck() {
         Collections.shuffle(cards);
