@@ -32,3 +32,9 @@ java {
         languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
+
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(true)
+    }
+}
