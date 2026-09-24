@@ -34,6 +34,42 @@ class GameTest {
     }
 
     @Test
+    void testMutualBlackjackFromStart() {
+        Deck deck = createTestDeck(
+                new Card(Suits.HEARTS, Ranks.ACE),
+                new Card(Suits.CLUBS, Ranks.ACE),
+                new Card(Suits.SPADES, Ranks.KING),
+                new Card(Suits.DIAMONDS, Ranks.KING)
+        );
+
+        Scanner scanner = new Scanner("0\n");
+        Game game = new Game(scanner, deck);
+
+        game.startGame();
+
+        assertEquals(0, game.getPlayerScore());
+        assertEquals(0, game.getDealerScore());
+    }
+
+    @Test
+    void testDealerBlackjackFromStart() {
+        Deck deck = createTestDeck(
+                new Card(Suits.HEARTS, Ranks.TEN),
+                new Card(Suits.CLUBS, Ranks.ACE),
+                new Card(Suits.SPADES, Ranks.FIVE),
+                new Card(Suits.DIAMONDS, Ranks.KING)
+        );
+
+        Scanner scanner = new Scanner("0\n");
+        Game game = new Game(scanner, deck);
+
+        game.startGame();
+
+        assertEquals(0, game.getPlayerScore());
+        assertEquals(1, game.getDealerScore());
+    }
+
+    @Test
     void testPlayerBust() {
         Deck deck = createTestDeck(
                 new Card(Suits.HEARTS, Ranks.TEN),
@@ -68,6 +104,42 @@ class GameTest {
         game.startGame();
 
         assertEquals(1, game.getPlayerScore());
+        assertEquals(0, game.getDealerScore());
+    }
+
+    @Test
+    void testDealerWinsByPoints() {
+        Deck deck = createTestDeck(
+                new Card(Suits.HEARTS, Ranks.TEN),
+                new Card(Suits.CLUBS, Ranks.TEN),
+                new Card(Suits.SPADES, Ranks.EIGHT),
+                new Card(Suits.DIAMONDS, Ranks.NINE)
+        );
+
+        Scanner scanner = new Scanner("0\n0\n");
+        Game game = new Game(scanner, deck);
+
+        game.startGame();
+
+        assertEquals(0, game.getPlayerScore());
+        assertEquals(1, game.getDealerScore());
+    }
+
+    @Test
+    void testTieByPoints() {
+        Deck deck = createTestDeck(
+                new Card(Suits.HEARTS, Ranks.TEN),
+                new Card(Suits.CLUBS, Ranks.TEN),
+                new Card(Suits.SPADES, Ranks.EIGHT),
+                new Card(Suits.DIAMONDS, Ranks.EIGHT)
+        );
+
+        Scanner scanner = new Scanner("0\n0\n");
+        Game game = new Game(scanner, deck);
+
+        game.startGame();
+
+        assertEquals(0, game.getPlayerScore());
         assertEquals(0, game.getDealerScore());
     }
 }

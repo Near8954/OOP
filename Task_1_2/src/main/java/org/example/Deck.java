@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Stack;
 
@@ -20,7 +21,7 @@ public class Deck {
         }
     }
 
-    public Deck(Stack<Card> cards) {
+    public Deck(Collection<Card> cards) {
         for (Card card : cards) {
             this.cards.push(card);
         }
