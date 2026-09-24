@@ -8,7 +8,9 @@ public class Dealer extends Participant {
      * Empty dealer's constructor.
      */
     public Dealer() {}
-
+    // Малышка любит дилера, дилера —
+    // Он стильный и смелый
+    // (Он, стильный и смелый)
     /**
      * Returns hidden dealer's hand.
      *

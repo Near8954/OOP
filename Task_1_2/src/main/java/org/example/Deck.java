@@ -20,6 +20,12 @@ public class Deck {
         }
     }
 
+    public Deck(Stack<Card> cards) {
+        for (Card card : cards) {
+            this.cards.push(card);
+        }
+    }
+
     /**
      * Shuffles deck with cards.
      */

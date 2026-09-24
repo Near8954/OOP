@@ -1,26 +1,73 @@
 package org.example;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.util.Scanner;
+import java.util.Stack;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
 
-    private final InputStream originalSystemIn = System.in;
-
-    @AfterEach
-    void tearDown() {
-        System.setIn(originalSystemIn);
+    private Deck createTestDeck(Card... cards) {
+        Stack<Card> stack = new Stack<>();
+        for (int i = cards.length - 1; i >= 0; i--) {
+            stack.push(cards[i]);
+        }
+        return new Deck(stack);
     }
 
     @Test
-    void testGameExecutionAndExit() {
-        String simulatedInput = "0\n0\n0\n";
-        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
+    void testPlayerBlackjackFromStart() {
+        Deck deck = createTestDeck(
+                new Card(Suits.HEARTS, Ranks.ACE),
+                new Card(Suits.CLUBS, Ranks.TWO),
+                new Card(Suits.SPADES, Ranks.KING),
+                new Card(Suits.DIAMONDS, Ranks.THREE)
+        );
 
-        Game game = new Game();
-        assertDoesNotThrow(game::startGame);
+        Scanner scanner = new Scanner("0\n");
+        Game game = new Game(scanner, deck);
+
+        game.startGame();
+
+        assertEquals(1, game.getPlayerScore());
+        assertEquals(0, game.getDealerScore());
+    }
+
+    @Test
+    void testPlayerBust() {
+        Deck deck = createTestDeck(
+                new Card(Suits.HEARTS, Ranks.TEN),
+                new Card(Suits.CLUBS, Ranks.TEN),
+                new Card(Suits.SPADES, Ranks.SEVEN),
+                new Card(Suits.DIAMONDS, Ranks.SIX),
+                new Card(Suits.HEARTS, Ranks.FIVE)
+        );
+
+        Scanner scanner = new Scanner("1\n0\n");
+        Game game = new Game(scanner, deck);
+
+        game.startGame();
+
+        assertEquals(0, game.getPlayerScore());
+        assertEquals(1, game.getDealerScore());
+    }
+
+    @Test
+    void testPlayerStandsAndDealerBusts() {
+        Deck deck = createTestDeck(
+                new Card(Suits.HEARTS, Ranks.TEN),
+                new Card(Suits.CLUBS, Ranks.TEN),
+                new Card(Suits.SPADES, Ranks.NINE),
+                new Card(Suits.DIAMONDS, Ranks.SIX),
+                new Card(Suits.HEARTS, Ranks.SIX)
+        );
+
+        Scanner scanner = new Scanner("0\n0\n");
+        Game game = new Game(scanner, deck);
+
+        game.startGame();
+
+        assertEquals(1, game.getPlayerScore());
+        assertEquals(0, game.getDealerScore());
     }
 }

@@ -7,6 +7,7 @@ import java.util.List;
  * Abstract class with hand.
  */
 public abstract class Participant {
+    static final int MAX_CARDS_SUM = 21;
     protected final List<Card> hand = new ArrayList<>();
 
     /**
@@ -41,13 +42,13 @@ public abstract class Participant {
 
         for (Card card : hand) {
             if (card.getRank() == Ranks.ACE) {
-                card.setCurrentValue(11);
+                card.setCurrentValue(Ranks.ACE.getValue());
             }
             sum += card.getCurrentValue();
         }
 
         for (Card card : hand) {
-            if (sum > 21 && card.getRank() == Ranks.ACE && card.getCurrentValue() == 11) {
+            if (sum > MAX_CARDS_SUM && card.getRank() == Ranks.ACE && card.getCurrentValue() == Ranks.ACE.getValue()) {
                 card.setCurrentValue(1);
                 sum -= 10;
             }
