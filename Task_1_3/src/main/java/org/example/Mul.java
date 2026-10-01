@@ -1,10 +1,12 @@
 package org.example;
+
 import java.util.Map;
 import java.util.Objects;
 
 
 class Mul extends Expression {
-    private final Expression left, right;
+    private final Expression left;
+    private final Expression right;
 
     public Mul(Expression left, Expression right) {
         this.left = left;
@@ -18,7 +20,8 @@ class Mul extends Expression {
 
     @Override
     public Expression derivative(String variable) {
-        return new Add(new Mul(left.derivative(variable), right), new Mul(right.derivative(variable),  left));
+        return new Add(new Mul(left.derivative(variable), right),
+                       new Mul(right.derivative(variable), left));
     }
 
     @Override
@@ -54,7 +57,8 @@ class Mul extends Expression {
             return left;
         }
         if (left instanceof Number && right instanceof Number) {
-            return new Number(((Number) left).getValue() * ((Number) right).getValue());
+            return new Number(((Number) left).getValue() *
+                                     ((Number) right).getValue());
         }
         return new Mul(left, right);
     }

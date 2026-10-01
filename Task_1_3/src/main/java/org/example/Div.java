@@ -1,9 +1,11 @@
 package org.example;
+
 import java.util.Map;
 import java.util.Objects;
 
 class Div extends Expression {
-    private final Expression left, right;
+    private final Expression left;
+    private final Expression right;
 
     public Div(Expression left, Expression right) {
         this.left = left;
