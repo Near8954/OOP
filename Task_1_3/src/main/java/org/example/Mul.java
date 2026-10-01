@@ -31,8 +31,8 @@ class Mul extends Expression {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {return true;}
-        if (obj == null || getClass() != obj.getClass()) {return false;}
+        if (this == obj) { return true; }
+        if (obj == null || getClass() != obj.getClass()) { return false; }
         Mul mul = (Mul) obj;
         return left.equals(mul.left) && right.equals(mul.right);
     }
