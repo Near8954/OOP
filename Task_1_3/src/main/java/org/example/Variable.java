@@ -64,7 +64,7 @@ class Variable extends Expression {
         if (variables.containsKey(name)) {
             return variables.get(name);
         }
-        throw new ArithmeticException("Variable " + name + " not found");
+        throw new IllegalArgumentException("Variable " + name + " not found");
     }
 
     /**
