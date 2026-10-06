@@ -5,18 +5,44 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Stack;
 
+/** Base class for mathematical expressions. */
 public abstract class Expression {
+
+    /** Prints the expression to standard output. */
     public void print() {
         System.out.println(this.toString());
     }
 
+    /**
+     * Returns the string representation.
+     *
+     * @return string representation
+     */
     @Override
     public abstract String toString();
 
+    /**
+     * Calculates the derivative.
+     *
+     * @param variable variable to differentiate by
+     * @return derivative expression
+     */
     public abstract Expression derivative(String variable);
 
+    /**
+     * Evaluates the expression with given variable values.
+     *
+     * @param variables map of variable values
+     * @return result
+     */
     protected abstract int eval(Map<String, Integer> variables);
 
+    /**
+     * Evaluates the expression using an assignment string.
+     *
+     * @param assignments string format "var1=val1;var2=val2"
+     * @return result
+     */
     public int eval(String assignments) {
         Map<String, Integer> vars = new HashMap<>();
         if (assignments != null && !assignments.trim().isEmpty()) {
@@ -31,14 +57,36 @@ public abstract class Expression {
         return this.eval(vars);
     }
 
+    /**
+     * Checks equality.
+     *
+     * @param obj object to compare
+     * @return true if equal
+     */
     @Override
     public abstract boolean equals(Object obj);
 
+    /**
+     * Returns hash code.
+     *
+     * @return hash code
+     */
     @Override
     public abstract int hashCode();
 
+    /**
+     * Simplifies the expression.
+     *
+     * @return simplified expression
+     */
     public abstract Expression simplify();
 
+    /**
+     * Parses a string into an Expression tree.
+     *
+     * @param str expression string
+     * @return root Expression
+     */
     public static Expression parseAdvanced(String str) {
         Stack<Expression> values = new Stack<>();
         Stack<Character> ops = new Stack<>();
@@ -88,12 +136,25 @@ public abstract class Expression {
         return values.pop();
     }
 
+    /**
+     * Gets operator priority.
+     *
+     * @param op operator char
+     * @return priority value
+     */
     private static int getPriority(char op) {
         if (op == '(') return 0;
         if (op == '+' || op == '-') return 1;
         if (op == '*' || op == '/') return 2;
         return -1;
     }
+
+    /**
+     * Applies the top operator to the top two values.
+     *
+     * @param values stack of values
+     * @param op     operator char
+     */
     private static void applyTopOperator(Stack<Expression> values, char op) {
         Expression right = values.pop();
         Expression left = values.pop();
