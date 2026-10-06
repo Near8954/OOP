@@ -31,9 +31,9 @@ class ExpressionTest {
     void testEvalWithAssignments() {
         Expression expr = new Add(new Variable("x"), new Number(5));
         assertEquals(15, expr.eval(" x = 10 ; y = 20 "));
-        assertThrows(ArithmeticException.class, () -> expr.eval(""));
-        assertThrows(ArithmeticException.class, () -> expr.eval((String) null));
-        assertThrows(ArithmeticException.class, () -> expr.eval("invalid_assignment_format"));
+        assertThrows(IllegalArgumentException.class, () -> expr.eval(""));
+        assertThrows(IllegalArgumentException.class, () -> expr.eval((String) null));
+        assertThrows(IllegalArgumentException.class, () -> expr.eval("invalid_assignment_format"));
     }
 
     /**
