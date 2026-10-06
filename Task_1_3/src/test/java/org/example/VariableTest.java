@@ -29,7 +29,7 @@ class VariableTest {
     void testEval() {
         Variable var = new Variable("x");
         assertEquals(10, var.eval("x=10; y=5"));
-        assertThrows(ArithmeticException.class, () -> var.eval("y=5"));
+        assertThrows(IllegalArgumentException.class, () -> var.eval("y=5"));
     }
 
     /**
