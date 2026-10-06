@@ -1,6 +1,8 @@
 package org.example;
 
-/** Main class to demonstrate expressions. */
+/**
+ * Main class to demonstrate expressions.
+ */
 public class Main {
 
     /**

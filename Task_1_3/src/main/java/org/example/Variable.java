@@ -3,8 +3,11 @@ package org.example;
 import java.util.Map;
 import java.util.Objects;
 
-/** Represents a variable in an expression. */
+/**
+ * Represents a variable in an expression.
+ */
 class Variable extends Expression {
+
     private final String name;
 
     /**
@@ -21,7 +24,9 @@ class Variable extends Expression {
      *
      * @return the name
      */
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
     /**
      * Returns the string representation.
@@ -70,8 +75,12 @@ class Variable extends Expression {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
         Variable variable = (Variable) obj;
         return Objects.equals(name, variable.name);
     }

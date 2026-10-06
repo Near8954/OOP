@@ -3,8 +3,11 @@ package org.example;
 import java.util.Map;
 import java.util.Objects;
 
-/** Represents the multiplication of two expressions. */
+/**
+ * Represents the multiplication of two expressions.
+ */
 class Mul extends Expression {
+
     private final Expression left;
     private final Expression right;
 
@@ -38,7 +41,7 @@ class Mul extends Expression {
     @Override
     public Expression derivative(String variable) {
         return new Add(new Mul(left.derivative(variable), right),
-                new Mul(right.derivative(variable), left));
+            new Mul(right.derivative(variable), left));
     }
 
     /**
@@ -76,7 +79,9 @@ class Mul extends Expression {
      * @return hash code
      */
     @Override
-    public int hashCode() { return Objects.hash(left, right, "Mul"); }
+    public int hashCode() {
+        return Objects.hash(left, right, "Mul");
+    }
 
     /**
      * Simplifies the multiplication expression.
@@ -101,7 +106,7 @@ class Mul extends Expression {
         }
         if (left instanceof Number && right instanceof Number) {
             return new Number(((Number) left).getValue() *
-                    ((Number) right).getValue());
+                ((Number) right).getValue());
         }
         return new Mul(left, right);
     }

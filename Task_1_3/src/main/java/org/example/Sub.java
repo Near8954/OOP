@@ -3,8 +3,11 @@ package org.example;
 import java.util.Map;
 import java.util.Objects;
 
-/** Represents the subtraction of two expressions. */
+/**
+ * Represents the subtraction of two expressions.
+ */
 class Sub extends Expression {
+
     private final Expression left;
     private final Expression right;
 
@@ -59,8 +62,12 @@ class Sub extends Expression {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {return true;}
-        if (obj == null || getClass() != obj.getClass()) {return false;}
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
         Sub sub = (Sub) obj;
         return left.equals(sub.left) && right.equals(sub.right);
     }
@@ -71,7 +78,9 @@ class Sub extends Expression {
      * @return hash code
      */
     @Override
-    public int hashCode() { return Objects.hash(left, right, "Sub"); }
+    public int hashCode() {
+        return Objects.hash(left, right, "Sub");
+    }
 
     /**
      * Simplifies the subtraction expression.
@@ -82,8 +91,12 @@ class Sub extends Expression {
     public Expression simplify() {
         Expression left = this.left.simplify();
         Expression right = this.right.simplify();
-        if (left.equals(right)) return new Number(0);
-        if (right instanceof Number && ((Number) right).getValue() == 0) return left;
+        if (left.equals(right)) {
+            return new Number(0);
+        }
+        if (right instanceof Number && ((Number) right).getValue() == 0) {
+            return left;
+        }
         if (left instanceof Number && right instanceof Number) {
             return new Number(((Number) left).getValue() - ((Number) right).getValue());
         }

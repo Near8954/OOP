@@ -3,8 +3,11 @@ package org.example;
 import java.util.Map;
 import java.util.Objects;
 
-/** Represents the addition of two expressions. */
+/**
+ * Represents the addition of two expressions.
+ */
 class Add extends Expression {
+
     private final Expression left;
     private final Expression right;
 
@@ -59,8 +62,12 @@ class Add extends Expression {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {return true;}
-        if (obj == null || getClass() != obj.getClass()) {return false;}
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
         Add add = (Add) obj;
         return left.equals(add.left) && right.equals(add.right);
     }
@@ -71,7 +78,9 @@ class Add extends Expression {
      * @return hash code
      */
     @Override
-    public int hashCode() { return Objects.hash(left, right, "Add"); }
+    public int hashCode() {
+        return Objects.hash(left, right, "Add");
+    }
 
     /**
      * Simplifies the addition expression.

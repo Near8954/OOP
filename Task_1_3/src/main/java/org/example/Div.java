@@ -3,8 +3,11 @@ package org.example;
 import java.util.Map;
 import java.util.Objects;
 
-/** Represents the division of two expressions. */
+/**
+ * Represents the division of two expressions.
+ */
 class Div extends Expression {
+
     private final Expression left;
     private final Expression right;
 
@@ -61,8 +64,12 @@ class Div extends Expression {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {return true;}
-        if (obj == null || getClass() != obj.getClass()) {return false;}
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
         Div div = (Div) obj;
         return left.equals(div.left) && right.equals(div.right);
     }
@@ -73,7 +80,9 @@ class Div extends Expression {
      * @return hash code
      */
     @Override
-    public int hashCode() { return Objects.hash(left, right, "Div"); }
+    public int hashCode() {
+        return Objects.hash(left, right, "Div");
+    }
 
     /**
      * Simplifies the division expression.

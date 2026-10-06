@@ -3,8 +3,11 @@ package org.example;
 import java.util.Map;
 import java.util.Objects;
 
-/** Represents a constant number in an expression. */
+/**
+ * Represents a constant number in an expression.
+ */
 class Number extends Expression {
+
     private final int value;
 
     /**
@@ -21,7 +24,9 @@ class Number extends Expression {
      *
      * @return integer value
      */
-    public int getValue() { return value; }
+    public int getValue() {
+        return value;
+    }
 
     /**
      * Returns the string representation.
@@ -63,8 +68,12 @@ class Number extends Expression {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
         Number number = (Number) obj;
         return value == number.value;
     }

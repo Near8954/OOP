@@ -5,10 +5,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Stack;
 
-/** Base class for mathematical expressions. */
+/**
+ * Base class for mathematical expressions.
+ */
 public abstract class Expression {
 
-    /** Prints the expression to standard output. */
+    /**
+     * Prints the expression to standard output.
+     */
     public void print() {
         System.out.println(this.toString());
     }
@@ -143,9 +147,15 @@ public abstract class Expression {
      * @return priority value
      */
     private static int getPriority(char op) {
-        if (op == '(') return 0;
-        if (op == '+' || op == '-') return 1;
-        if (op == '*' || op == '/') return 2;
+        if (op == '(') {
+            return 0;
+        }
+        if (op == '+' || op == '-') {
+            return 1;
+        }
+        if (op == '*' || op == '/') {
+            return 2;
+        }
         return -1;
     }
 
@@ -159,10 +169,18 @@ public abstract class Expression {
         Expression right = values.pop();
         Expression left = values.pop();
         switch (op) {
-            case '+': values.push(new Add(left, right)); break;
-            case '-': values.push(new Sub(left, right)); break;
-            case '*': values.push(new Mul(left, right)); break;
-            case '/': values.push(new Div(left, right)); break;
+            case '+':
+                values.push(new Add(left, right));
+                break;
+            case '-':
+                values.push(new Sub(left, right));
+                break;
+            case '*':
+                values.push(new Mul(left, right));
+                break;
+            case '/':
+                values.push(new Div(left, right));
+                break;
         }
     }
 }
