@@ -46,6 +46,8 @@ public abstract class Expression {
      *
      * @param assignments string format "var1=val1;var2=val2"
      * @return result
+     * @throws IllegalArgumentException if a required variable is missing or the assignment format
+     *                                  is invalid
      */
     public int eval(String assignments) {
         Map<String, Integer> vars = new HashMap<>();

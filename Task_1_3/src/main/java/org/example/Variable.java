@@ -57,7 +57,7 @@ class Variable extends Expression {
      *
      * @param variables map of variable values
      * @return variable value
-     * @throws ArithmeticException if not found
+     * @throws IllegalArgumentException if not found
      */
     @Override
     protected int eval(Map<String, Integer> variables) {
