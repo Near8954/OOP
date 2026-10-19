@@ -8,8 +8,27 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Абстрактный базовый класс графа, реализующий общие операции:
+ * чтение из файла, сравнение на равенство ({@code equals}/{@code hashCode}) и вывод в строку ({@code toString}).
+ *
+ * @param <V> тип вершин графа
+ */
 public abstract class AbstractGraph<V> implements Graph<V> {
 
+    /**
+     * Конструктор по умолчанию.
+     */
+    protected AbstractGraph() {
+    }
+
+    /**
+     * Считывает граф из текстового файла фиксированного формата.
+     * Каждая строка файла содержит либо одну вершину, либо пару вершин (ребро) через пробел.
+     *
+     * @param filePath путь к текстовому файлу
+     * @throws IOException если произошла ошибка чтения файла
+     */
     @Override
     @SuppressWarnings("unchecked")
     public void readFromFile(Path filePath) throws IOException {
@@ -17,7 +36,9 @@ public abstract class AbstractGraph<V> implements Graph<V> {
         List<String> lines = Files.readAllLines(filePath);
         for (String line : lines) {
             String trimmed = line.trim();
-            if (trimmed.isEmpty()) continue;
+            if (trimmed.isEmpty()) {
+                continue;
+            }
             String[] parts = trimmed.split("\\s+");
             if (parts.length == 2) {
                 addEdge((V) parts[0], (V) parts[1]);
@@ -27,10 +48,20 @@ public abstract class AbstractGraph<V> implements Graph<V> {
         }
     }
 
+    /**
+     * Сравнивает два графа на равенство независимо от способа их представления в памяти.
+     *
+     * @param o объект для сравнения
+     * @return {@code true}, если графы содержат одинаковые вершины и ребра; {@code false} иначе
+     */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Graph<?> other)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Graph<?> other)) {
+            return false;
+        }
 
         if (!Objects.equals(this.getVertices(), other.getVertices())) {
             return false;
@@ -48,6 +79,11 @@ public abstract class AbstractGraph<V> implements Graph<V> {
         return true;
     }
 
+    /**
+     * Вычисляет хэш-код графа на основе множества вершин и их соседей.
+     *
+     * @return хэш-код графа
+     */
     @Override
     public int hashCode() {
         int result = getVertices().hashCode();
@@ -57,6 +93,11 @@ public abstract class AbstractGraph<V> implements Graph<V> {
         return result;
     }
 
+    /**
+     * Формирует строковое представление графа.
+     *
+     * @return строка со списком вершин и их соседей
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(getClass().getSimpleName() + " {\n");
