@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -108,9 +109,9 @@ public class GraphTest {
 
     @Test
     void testEqualsHashCodeAndToStringAcrossRepresentations() {
-        Graph<String> listGraph = new AdjacencyListGraph<>();
-        Graph<String> matrixGraph = new AdjacencyMatrixGraph<>();
-        Graph<String> incGraph = new IncidenceMatrixGraph<>();
+        AbstractGraph<String> listGraph = new AdjacencyListGraph<>();
+        AbstractGraph<String> matrixGraph = new AdjacencyMatrixGraph<>();
+        AbstractGraph<String> incGraph = new IncidenceMatrixGraph<>();
 
         for (Graph<String> g : List.of(listGraph, matrixGraph, incGraph)) {
             g.addEdge("1", "2");
@@ -122,6 +123,10 @@ public class GraphTest {
         assertEquals(matrixGraph, incGraph);
         assertEquals(incGraph, listGraph);
 
+        assertTrue(listGraph.equals((Graph<String>) listGraph));
+        assertTrue(listGraph.equals((Graph<String>) matrixGraph));
+        assertFalse(listGraph.equals((Graph<String>) null));
+
         assertEquals(listGraph.hashCode(), matrixGraph.hashCode());
         assertEquals(matrixGraph.hashCode(), incGraph.hashCode());
 
@@ -130,9 +135,11 @@ public class GraphTest {
 
         incGraph.addEdge("1", "3");
         assertNotEquals(listGraph, incGraph);
+        assertFalse(listGraph.equals((Graph<String>) incGraph));
 
         matrixGraph.addVertex("4");
         assertNotEquals(listGraph, matrixGraph);
+        assertFalse(listGraph.equals((Graph<String>) matrixGraph));
 
         String str = listGraph.toString();
         assertTrue(str.contains("AdjacencyListGraph"));
@@ -140,19 +147,19 @@ public class GraphTest {
     }
 
     @Test
-    void testReadFromFile(@TempDir Path tempDir) throws IOException {
-        Path file = tempDir.resolve("graph.txt");
-        String content = """
+    void testReadFromFileStringAndInteger(@TempDir Path tempDir) throws IOException {
+        Path stringFile = tempDir.resolve("graph_str.txt");
+        String strContent = """
                 A B
                 
                 B C
                 D
                 """;
-        Files.writeString(file, content);
+        Files.writeString(stringFile, strContent);
 
         List<Graph<String>> graphs = createAllGraphs();
         for (Graph<String> g : graphs) {
-            g.readFromFile(file);
+            g.readFromFile(stringFile, Function.identity());
             assertEquals(Set.of("A", "B", "C", "D"), g.getVertices());
             assertTrue(g.hasEdge("A", "B"));
             assertTrue(g.hasEdge("B", "C"));
@@ -161,6 +168,21 @@ public class GraphTest {
 
         assertEquals(graphs.get(0), graphs.get(1));
         assertEquals(graphs.get(1), graphs.get(2));
+
+        Path intFile = tempDir.resolve("graph_int.txt");
+        String intContent = """
+                10 20
+                20 30
+                40
+                """;
+        Files.writeString(intFile, intContent);
+
+        Graph<Integer> intGraph = new AdjacencyListGraph<>();
+        intGraph.readFromFile(intFile, Integer::parseInt);
+        assertEquals(Set.of(10, 20, 30, 40), intGraph.getVertices());
+        assertTrue(intGraph.hasEdge(10, 20));
+        assertTrue(intGraph.hasEdge(20, 30));
+        assertTrue(intGraph.getNeighbors(40).isEmpty());
     }
 
     @Test

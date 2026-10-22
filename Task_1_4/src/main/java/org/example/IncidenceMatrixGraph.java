@@ -35,12 +35,6 @@ public class IncidenceMatrixGraph<V> extends AbstractGraph<V> {
     public IncidenceMatrixGraph() {
     }
 
-    /**
-     * Добавляет новую вершину (строку) в матрицу инцидентности.
-     *
-     * @param vertex добавляемая вершина
-     * @return {@code true}, если вершина добавлена; {@code false}, если уже существует
-     */
     @Override
     public boolean addVertex(V vertex) {
         Objects.requireNonNull(vertex, "Вершина не может быть null");
@@ -55,12 +49,6 @@ public class IncidenceMatrixGraph<V> extends AbstractGraph<V> {
         return true;
     }
 
-    /**
-     * Удаляет вершину и все инцидентные ей столбцы-ребра.
-     *
-     * @param vertex удаляемая вершина
-     * @return {@code true}, если вершина была удалена; {@code false} иначе
-     */
     @Override
     public boolean removeVertex(V vertex) {
         int vIdx = vertices.indexOf(vertex);
@@ -76,13 +64,6 @@ public class IncidenceMatrixGraph<V> extends AbstractGraph<V> {
         return true;
     }
 
-    /**
-     * Добавляет новое ориентированное ребро (новый столбец) в матрицу инцидентности.
-     *
-     * @param from начальная вершина
-     * @param to   конечная вершина
-     * @return {@code true}, если ребро добавлено; {@code false}, если уже существует
-     */
     @Override
     public boolean addEdge(V from, V to) {
         addVertex(from);
@@ -105,13 +86,6 @@ public class IncidenceMatrixGraph<V> extends AbstractGraph<V> {
         return true;
     }
 
-    /**
-     * Удаляет ребро (столбец) из матрицы инцидентности.
-     *
-     * @param from начальная вершина
-     * @param to   конечная вершина
-     * @return {@code true}, если ребро найдено и удалено; {@code false} иначе
-     */
     @Override
     public boolean removeEdge(V from, V to) {
         int colIdx = findEdgeColumnIndex(from, to);
@@ -122,13 +96,6 @@ public class IncidenceMatrixGraph<V> extends AbstractGraph<V> {
         return true;
     }
 
-    /**
-     * Возвращает список всех соседей вершины, анализируя столбцы матрицы инцидентности.
-     *
-     * @param vertex исходная вершина
-     * @return список соседних вершин
-     * @throws IllegalArgumentException если вершина отсутствует в графе
-     */
     @Override
     public List<V> getNeighbors(V vertex) {
         int u = vertices.indexOf(vertex);
@@ -152,42 +119,21 @@ public class IncidenceMatrixGraph<V> extends AbstractGraph<V> {
         return neighbors;
     }
 
-    /**
-     * Возвращает множество всех вершин графа.
-     *
-     * @return множество вершин
-     */
     @Override
     public Set<V> getVertices() {
         return new LinkedHashSet<>(vertices);
     }
 
-    /**
-     * Проверяет наличие вершины в графе.
-     *
-     * @param vertex проверяемая вершина
-     * @return {@code true}, если вершина существует
-     */
     @Override
     public boolean hasVertex(V vertex) {
         return vertices.contains(vertex);
     }
 
-    /**
-     * Проверяет наличие ориентированного ребра между вершинами.
-     *
-     * @param from начальная вершина
-     * @param to   конечная вершина
-     * @return {@code true}, если ребро существует
-     */
     @Override
     public boolean hasEdge(V from, V to) {
         return findEdgeColumnIndex(from, to) != -1;
     }
 
-    /**
-     * Очищает матрицу инцидентности и список вершин.
-     */
     @Override
     public void clear() {
         vertices.clear();

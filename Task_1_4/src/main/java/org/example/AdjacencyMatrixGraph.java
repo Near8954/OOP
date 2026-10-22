@@ -30,12 +30,6 @@ public class AdjacencyMatrixGraph<V> extends AbstractGraph<V> {
     public AdjacencyMatrixGraph() {
     }
 
-    /**
-     * Добавляет новую вершину и расширяет матрицу смежности.
-     *
-     * @param vertex добавляемая вершина
-     * @return {@code true}, если вершина добавлена; {@code false}, если уже существует
-     */
     @Override
     public boolean addVertex(V vertex) {
         Objects.requireNonNull(vertex, "Вершина не может быть null");
@@ -51,12 +45,6 @@ public class AdjacencyMatrixGraph<V> extends AbstractGraph<V> {
         return true;
     }
 
-    /**
-     * Удаляет вершину и соответствующие ей строку и столбец матрицы смежности.
-     *
-     * @param vertex удаляемая вершина
-     * @return {@code true}, если вершина удалена; {@code false} иначе
-     */
     @Override
     public boolean removeVertex(V vertex) {
         int idx = vertices.indexOf(vertex);
@@ -72,13 +60,6 @@ public class AdjacencyMatrixGraph<V> extends AbstractGraph<V> {
         return true;
     }
 
-    /**
-     * Добавляет ориентированное ребро в матрицу смежности.
-     *
-     * @param from начальная вершина
-     * @param to   конечная вершина
-     * @return {@code true}, если ребро добавлено; {@code false}, если уже было
-     */
     @Override
     public boolean addEdge(V from, V to) {
         addVertex(from);
@@ -92,13 +73,6 @@ public class AdjacencyMatrixGraph<V> extends AbstractGraph<V> {
         return true;
     }
 
-    /**
-     * Удаляет ориентированное ребро из матрицы смежности.
-     *
-     * @param from начальная вершина
-     * @param to   конечная вершина
-     * @return {@code true}, если ребро удалено; {@code false} иначе
-     */
     @Override
     public boolean removeEdge(V from, V to) {
         int u = vertices.indexOf(from);
@@ -110,13 +84,6 @@ public class AdjacencyMatrixGraph<V> extends AbstractGraph<V> {
         return true;
     }
 
-    /**
-     * Возвращает список всех соседей указанной вершины по строке матрицы смежности.
-     *
-     * @param vertex исходная вершина
-     * @return список соседних вершин
-     * @throws IllegalArgumentException если вершина не найдена
-     */
     @Override
     public List<V> getNeighbors(V vertex) {
         int u = vertices.indexOf(vertex);
@@ -134,34 +101,16 @@ public class AdjacencyMatrixGraph<V> extends AbstractGraph<V> {
         return neighbors;
     }
 
-    /**
-     * Возвращает множество всех вершин графа.
-     *
-     * @return множество вершин
-     */
     @Override
     public Set<V> getVertices() {
         return new LinkedHashSet<>(vertices);
     }
 
-    /**
-     * Проверяет наличие вершины в графе.
-     *
-     * @param vertex проверяемая вершина
-     * @return {@code true}, если вершина присутствует
-     */
     @Override
     public boolean hasVertex(V vertex) {
         return vertices.contains(vertex);
     }
 
-    /**
-     * Проверяет наличие ребра в матрице смежности.
-     *
-     * @param from начальная вершина
-     * @param to   конечная вершина
-     * @return {@code true}, если ребро существует
-     */
     @Override
     public boolean hasEdge(V from, V to) {
         int u = vertices.indexOf(from);
@@ -169,9 +118,6 @@ public class AdjacencyMatrixGraph<V> extends AbstractGraph<V> {
         return u != -1 && v != -1 && matrix.get(u).get(v);
     }
 
-    /**
-     * Очищает список вершин и матрицу смежности.
-     */
     @Override
     public void clear() {
         vertices.clear();

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Интерфейс ориентированного графа.
@@ -17,6 +18,7 @@ public interface Graph<V> {
      *
      * @param vertex добавляемая вершина
      * @return {@code true}, если вершина успешно добавлена; {@code false}, если уже существует
+     * @throws NullPointerException если переданная вершина равна {@code null}
      */
     boolean addVertex(V vertex);
 
@@ -34,6 +36,7 @@ public interface Graph<V> {
      * @param from начальная вершина ребра
      * @param to   конечная вершина ребра
      * @return {@code true}, если ребро добавлено; {@code false}, если оно уже существует
+     * @throws NullPointerException если любая из переданных вершин равна {@code null}
      */
     boolean addEdge(V from, V to);
 
@@ -56,12 +59,14 @@ public interface Graph<V> {
     List<V> getNeighbors(V vertex);
 
     /**
-     * Считывает граф из файла фиксированного формата.
+     * Считывает граф из файла фиксированного формата, используя функцию парсинга вершин.
      *
      * @param filePath путь к файлу
-     * @throws IOException если возникла ошибка при чтении файла
+     * @param parser   функция преобразования строкового представления вершины в тип {@code V}
+     * @throws IOException          если возникла ошибка при чтении файла
+     * @throws NullPointerException если {@code filePath} или {@code parser} равны {@code null}
      */
-    void readFromFile(Path filePath) throws IOException;
+    void readFromFile(Path filePath, Function<String, V> parser) throws IOException;
 
     /**
      * Возвращает множество всех вершин графа.
