@@ -104,7 +104,8 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements <a href="Graph.html" title="interface in org.example">Graph</a>&lt;V&gt;</span></div>
 <div class="block">Абстрактный базовый класс графа, реализующий общие операции:
- чтение из файла, сравнение на равенство (<code>equals</code>/<code>hashCode</code>) и вывод в строку (<code>toString</code>).</div>
+ чтение из файла, сравнение на равенство (<code>equals</code>/<code>hashCode</code>)
+ и вывод в строку (<code>toString</code>).</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -138,24 +139,24 @@ implements <a href="Graph.html" title="interface in org.example">Graph</a>&lt;V&
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Сравнивает два графа на равенство независимо от способа их представления в памяти.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(org.example.Graph)" class="member-name-link">equals</a><wbr>(<a href="Graph.html" title="interface in org.example">Graph</a>&lt;<a href="AbstractGraph.html" title="type parameter in AbstractGraph">V</a>&gt;&nbsp;other)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Вычисляет хэш-код графа на основе множества вершин и их соседей.</div>
+<div class="block">Сравнивает текущий граф с другим графом того же параметризованного типа.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#readFromFile(java.nio.file.Path)" class="member-name-link">readFromFile</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;filePath)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Считывает граф из текстового файла фиксированного формата.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#readFromFile(java.nio.file.Path,java.util.function.Function)" class="member-name-link">readFromFile</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;filePath,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="AbstractGraph.html" title="type parameter in AbstractGraph">V</a>&gt;&nbsp;parser)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Формирует строковое представление графа.</div>
+<div class="block">Считывает граф из файла фиксированного формата, используя функцию парсинга вершин.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -192,19 +193,34 @@ implements <a href="Graph.html" title="interface in org.example">Graph</a>&lt;V&
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="readFromFile(java.nio.file.Path)">
+<section class="detail" id="readFromFile(java.nio.file.Path,java.util.function.Function)">
 <h3>readFromFile</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">readFromFile</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;filePath)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">readFromFile</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;filePath,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="AbstractGraph.html" title="type parameter in AbstractGraph">V</a>&gt;&nbsp;parser)</span>
                   throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
-<div class="block">Считывает граф из текстового файла фиксированного формата.
- Каждая строка файла содержит либо одну вершину, либо пару вершин (ребро) через пробел.</div>
+<div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="Graph.html#readFromFile(java.nio.file.Path,java.util.function.Function)">Graph</a></code></span></div>
+<div class="block">Считывает граф из файла фиксированного формата, используя функцию парсинга вершин.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="Graph.html#readFromFile(java.nio.file.Path)">readFromFile</a></code>&nbsp;in interface&nbsp;<code><a href="Graph.html" title="interface in org.example">Graph</a>&lt;<a href="AbstractGraph.html" title="type parameter in AbstractGraph">V</a>&gt;</code></dd>
+<dd><code><a href="Graph.html#readFromFile(java.nio.file.Path,java.util.function.Function)">readFromFile</a></code>&nbsp;in interface&nbsp;<code><a href="Graph.html" title="interface in org.example">Graph</a>&lt;<a href="AbstractGraph.html" title="type parameter in AbstractGraph">V</a>&gt;</code></dd>
 <dt>Parameters:</dt>
-<dd><code>filePath</code> - путь к текстовому файлу</dd>
+<dd><code>filePath</code> - путь к файлу</dd>
+<dd><code>parser</code> - функция преобразования строкового представления вершины в тип <code>V</code></dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - если произошла ошибка чтения файла</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - если возникла ошибка при чтении файла</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="equals(org.example.Graph)">
+<h3>equals</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">equals</span><wbr><span class="parameters">(<a href="Graph.html" title="interface in org.example">Graph</a>&lt;<a href="AbstractGraph.html" title="type parameter in AbstractGraph">V</a>&gt;&nbsp;other)</span></div>
+<div class="block">Сравнивает текущий граф с другим графом того же параметризованного типа.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>other</code> - другой граф для сравнения</dd>
+<dt>Returns:</dt>
+<dd><code>true</code>, если графы содержат одинаковые вершины и ребра; <code>false</code> иначе</dd>
 </dl>
 </section>
 </li>
@@ -212,14 +228,9 @@ implements <a href="Graph.html" title="interface in org.example">Graph</a>&lt;V&
 <section class="detail" id="equals(java.lang.Object)">
 <h3>equals</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">equals</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</span></div>
-<div class="block">Сравнивает два графа на равенство независимо от способа их представления в памяти.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>o</code> - объект для сравнения</dd>
-<dt>Returns:</dt>
-<dd><code>true</code>, если графы содержат одинаковые вершины и ребра; <code>false</code> иначе</dd>
 </dl>
 </section>
 </li>
@@ -227,12 +238,9 @@ implements <a href="Graph.html" title="interface in org.example">Graph</a>&lt;V&
 <section class="detail" id="hashCode()">
 <h3>hashCode</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">hashCode</span>()</div>
-<div class="block">Вычисляет хэш-код графа на основе множества вершин и их соседей.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
-<dt>Returns:</dt>
-<dd>хэш-код графа</dd>
 </dl>
 </section>
 </li>
@@ -240,12 +248,9 @@ implements <a href="Graph.html" title="interface in org.example">Graph</a>&lt;V&
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
-<div class="block">Формирует строковое представление графа.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
-<dt>Returns:</dt>
-<dd>строка со списком вершин и их соседей</dd>
 </dl>
 </section>
 </li>

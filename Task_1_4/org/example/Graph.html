@@ -147,9 +147,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Проверяет наличие вершины в графе.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#readFromFile(java.nio.file.Path)" class="member-name-link">readFromFile</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;filePath)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#readFromFile(java.nio.file.Path,java.util.function.Function)" class="member-name-link">readFromFile</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;filePath,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="Graph.html" title="type parameter in Graph">V</a>&gt;&nbsp;parser)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Считывает граф из файла фиксированного формата.</div>
+<div class="block">Считывает граф из файла фиксированного формата, используя функцию парсинга вершин.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeEdge(V,V)" class="member-name-link">removeEdge</a><wbr>(<a href="Graph.html" title="type parameter in Graph">V</a>&nbsp;from,
@@ -186,6 +187,8 @@ loadScripts(document, 'script');</script>
 <dd><code>vertex</code> - добавляемая вершина</dd>
 <dt>Returns:</dt>
 <dd><code>true</code>, если вершина успешно добавлена; <code>false</code>, если уже существует</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - если переданная вершина равна <code>null</code></dd>
 </dl>
 </section>
 </li>
@@ -214,6 +217,8 @@ loadScripts(document, 'script');</script>
 <dd><code>to</code> - конечная вершина ребра</dd>
 <dt>Returns:</dt>
 <dd><code>true</code>, если ребро добавлено; <code>false</code>, если оно уже существует</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - если любая из переданных вершин равна <code>null</code></dd>
 </dl>
 </section>
 </li>
@@ -248,16 +253,19 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="readFromFile(java.nio.file.Path)">
+<section class="detail" id="readFromFile(java.nio.file.Path,java.util.function.Function)">
 <h3>readFromFile</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">readFromFile</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;filePath)</span>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">readFromFile</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;filePath,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="Graph.html" title="type parameter in Graph">V</a>&gt;&nbsp;parser)</span>
            throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
-<div class="block">Считывает граф из файла фиксированного формата.</div>
+<div class="block">Считывает граф из файла фиксированного формата, используя функцию парсинга вершин.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>filePath</code> - путь к файлу</dd>
+<dd><code>parser</code> - функция преобразования строкового представления вершины в тип <code>V</code></dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - если возникла ошибка при чтении файла</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - если <code>filePath</code> или <code>parser</code> равны <code>null</code></dd>
 </dl>
 </section>
 </li>
