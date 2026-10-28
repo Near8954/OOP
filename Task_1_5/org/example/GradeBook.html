@@ -92,8 +92,8 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">An immutable snapshot of a student's electronic grade book.
 
- <p>The curriculum control counts are taken from the MMF assignment table. Forecast methods
- return <code>false</code> when the records needed for a forecast are incomplete.</p></div>
+ <p>Forecasts use the supplied curriculum plan. Missing future transcript results remain
+ possible outcomes; missing records needed for a completed session prevent eligibility.</p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -110,6 +110,13 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Assessment.html" title="class in org.example">Assessment</a>&gt;&nbsp;assessments)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Creates an immutable grade-book snapshot for the current semester.</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(boolean,int,java.util.List,org.example.CurriculumPlan)" class="member-name-link">GradeBook</a><wbr>(boolean&nbsp;tuitionPaid,
+ int&nbsp;currentSemester,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Assessment.html" title="class in org.example">Assessment</a>&gt;&nbsp;assessments,
+ <a href="CurriculumPlan.html" title="class in org.example">CurriculumPlan</a>&nbsp;curriculumPlan)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Creates an immutable grade-book snapshot using a configurable curriculum plan.</div>
 </div>
 </div>
 </section>
@@ -170,17 +177,41 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Assessment.html" title="class in org.example">Assessment</a>&gt;&nbsp;assessments)</span></div>
 <div class="block">Creates an immutable grade-book snapshot for the current semester.
 
- <p>Past semester transcript controls must have results. Assignments, tests, and colloquia
- are tracking items and may remain pending because they do not produce transcript grades.</p></div>
+ <p>Assignments, tests, colloquia, and incomplete transcript controls may remain pending.
+ Forecast methods require complete results for past semesters where their rules need them.</p></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>tuitionPaid</code> - <code>true</code> if the student pays tuition</dd>
 <dd><code>currentSemester</code> - current semester from 1 to 8</dd>
 <dd><code>assessments</code> - controls recorded in the grade book, including planned future controls</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if the semester is invalid or a past transcript control
-         has no result</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if the semester is invalid or assessment counts exceed
+         the curriculum plan</dd>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - if <code>assessments</code> or one of its elements is <code>null</code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(boolean,int,java.util.List,org.example.CurriculumPlan)">
+<h3>GradeBook</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">GradeBook</span><wbr><span class="parameters">(boolean&nbsp;tuitionPaid,
+ int&nbsp;currentSemester,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Assessment.html" title="class in org.example">Assessment</a>&gt;&nbsp;assessments,
+ <a href="CurriculumPlan.html" title="class in org.example">CurriculumPlan</a>&nbsp;curriculumPlan)</span></div>
+<div class="block">Creates an immutable grade-book snapshot using a configurable curriculum plan.
+
+ <p>Assignments, tests, colloquia, and incomplete transcript controls may remain pending.
+ Forecast methods require complete results for past semesters where their rules need them.</p></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>tuitionPaid</code> - <code>true</code> if the student pays tuition</dd>
+<dd><code>currentSemester</code> - current semester from 1 to 8</dd>
+<dd><code>assessments</code> - controls recorded in the grade book</dd>
+<dd><code>curriculumPlan</code> - expected control counts for this student's curriculum</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if the semester is invalid or assessment counts exceed
+         the plan</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - if an argument or an assessment is <code>null</code></dd>
 </dl>
 </section>
 </li>
@@ -224,10 +255,11 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">canGetHonorsDiploma</span>()</div>
 <div class="block">Forecasts whether receiving a diploma with honors remains possible.
 
- <p>The curriculum must include all graded transcript controls and ordinary credits. No
- completed transcript grade may be satisfactory or failed, every ordinary credit must be
- passed, the thesis defense must be excellent, and at least 75 percent of transcript grades
- must be excellent or still pending.</p></div>
+ <p>All previous semester transcript results must be recorded. Current and future controls
+ need not be complete: missing or pending grades count as outcomes that may still become
+ excellent. No completed grade may be satisfactory or failed, every completed ordinary credit
+ must be passed, a completed thesis defense must be excellent, and at least 75 percent of all
+ planned numerical transcript grades must be excellent or still attainable.</p></div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd><code>true</code> if a valid diploma with honors remains attainable</dd>

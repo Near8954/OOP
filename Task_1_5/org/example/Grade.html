@@ -160,9 +160,19 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isFailure()" class="member-name-link">isFailure</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasNumericValue()" class="member-name-link">hasNumericValue</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Checks whether this grade represents a numerical assessment result.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isFailure()" class="member-name-link">isFailure</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Checks whether this result represents an unsuccessful assessment.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isRegularCreditGrade()" class="member-name-link">isRegularCreditGrade</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Checks whether this grade is a result for an ordinary pass/fail credit.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#points()" class="member-name-link">points</a>()</code></div>
@@ -296,6 +306,28 @@ not permitted.)</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>grade value from 2 to 5, or zero for pass/fail and pending results</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="hasNumericValue()">
+<h3>hasNumericValue</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">hasNumericValue</span>()</div>
+<div class="block">Checks whether this grade represents a numerical assessment result.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><code>true</code> for numerical grades from two to five</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="isRegularCreditGrade()">
+<h3>isRegularCreditGrade</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isRegularCreditGrade</span>()</div>
+<div class="block">Checks whether this grade is a result for an ordinary pass/fail credit.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd><code>true</code> for <a href="#PASS"><code>PASS</code></a> or <a href="#NOT_PASSED"><code>NOT_PASSED</code></a></dd>
 </dl>
 </section>
 </li>
