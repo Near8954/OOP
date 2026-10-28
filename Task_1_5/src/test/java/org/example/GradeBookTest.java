@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 /** Unit tests for the electronic grade book. */
 class GradeBookTest {
+    private final CurriculumPlan standardPlan = CurriculumPlan.standardMmf();
 
     /**
      * Creates the full curriculum with completed past transcript controls and pending future ones.
@@ -25,7 +27,7 @@ class GradeBookTest {
         List<Assessment> assessments = new ArrayList<>();
         for (int semester = 1; semester <= 8; semester++) {
             for (ControlType type : ControlType.values()) {
-                for (int index = 1; index <= type.expectedCount(semester); index++) {
+                for (int index = 1; index <= standardPlan.expectedCount(type, semester); index++) {
                     String subject = type.name() + "-" + semester + "-" + index;
                     Grade grade = defaultGrade(type, semester, currentSemester);
                     assessments.add(new Assessment(subject, semester, type,
@@ -96,6 +98,9 @@ class GradeBookTest {
         assertFalse(gradeBook(false, 3, Map.of()).canTransferToBudget());
         assertFalse(gradeBook(true, 2, Map.of()).canTransferToBudget());
         assertFalse(new GradeBook(true, 3, List.of()).canTransferToBudget());
+        GradeBook incompletePastSession = new GradeBook(true, 3,
+                curriculum(3, override("EXAM-1-1", Grade.PENDING)));
+        assertFalse(incompletePastSession.canTransferToBudget());
         assertFalse(gradeBook(true, 3,
                 override("EXAM-1-1", Grade.SATISFACTORY)).canTransferToBudget());
         assertFalse(gradeBook(true, 3,
@@ -109,8 +114,12 @@ class GradeBookTest {
     void honorsDiploma() {
         assertTrue(gradeBook(false, 2, Map.of()).canGetHonorsDiploma());
         assertFalse(new GradeBook(false, 2, List.of()).canGetHonorsDiploma());
+        assertTrue(new GradeBook(false, 1, List.of()).canGetHonorsDiploma());
         assertFalse(gradeBook(false, 2,
                 override("EXAM-1-1", Grade.SATISFACTORY)).canGetHonorsDiploma());
+        GradeBook incompleteHistory = new GradeBook(false, 2,
+                curriculum(2, override("EXAM-1-1", Grade.PENDING)));
+        assertFalse(incompleteHistory.canGetHonorsDiploma());
         assertFalse(gradeBook(false, 8,
                 override("THESIS_DEFENSE-8-1", Grade.GOOD)).canGetHonorsDiploma());
 
@@ -134,7 +143,8 @@ class GradeBookTest {
                 if (!type.isGraded()) {
                     continue;
                 }
-                for (int index = 1; index <= type.expectedCount(semester) && added < count; index++) {
+                for (int index = 1; index <= standardPlan.expectedCount(type, semester)
+                        && added < count; index++) {
                     overrides.put(type.name() + "-" + semester + "-" + index, Grade.GOOD);
                     added++;
                 }
@@ -168,13 +178,36 @@ class GradeBookTest {
                 () -> new Assessment("Course", 1, ControlType.EXAM, Grade.PASS));
         assertThrows(IllegalArgumentException.class,
                 () -> new Assessment("Course", 1, ControlType.ASSIGNMENT, Grade.GOOD));
-        assertThrows(IllegalArgumentException.class,
-                () -> new GradeBook(false, 2, curriculum(2,
-                        override("EXAM-1-1", Grade.PENDING))));
-
         GradeBook pastCourseworkMayRemainPending = gradeBook(false, 2, Map.of());
         assertTrue(pastCourseworkMayRemainPending.averageGrade().isPresent());
         assertThrows(IllegalArgumentException.class,
-                () -> ControlType.EXAM.expectedCount(9));
+                () -> standardPlan.expectedCount(ControlType.EXAM, 9));
+    }
+
+    /** Tests configurable plans and forecasting before future controls have been recorded. */
+    @Test
+    void configurablePlanAllowsEarlyHonorsForecast() {
+        Map<ControlType, List<Integer>> counts = new EnumMap<>(ControlType.class);
+        for (ControlType type : ControlType.values()) {
+            counts.put(type, List.of(0, 0, 0, 0, 0, 0, 0, 0));
+        }
+        counts.put(ControlType.EXAM, List.of(1, 0, 0, 0, 0, 0, 0, 0));
+        counts.put(ControlType.THESIS_DEFENSE, List.of(0, 0, 0, 0, 0, 0, 0, 1));
+        CurriculumPlan customPlan = new CurriculumPlan(counts);
+        Assessment currentExam = new Assessment("Exam", 1, ControlType.EXAM, Grade.PENDING);
+        GradeBook book = new GradeBook(false, 1, List.of(currentExam), customPlan);
+
+        assertEquals(1, customPlan.expectedCount(ControlType.EXAM, 1));
+        assertTrue(book.canGetHonorsDiploma());
+    }
+
+    /** Tests the grade classification helpers used by assessment validation. */
+    @Test
+    void gradeClassification() {
+        assertTrue(Grade.EXCELLENT.hasNumericValue());
+        assertFalse(Grade.PASS.hasNumericValue());
+        assertTrue(Grade.PASS.isRegularCreditGrade());
+        assertTrue(Grade.NOT_PASSED.isRegularCreditGrade());
+        assertFalse(Grade.PENDING.isRegularCreditGrade());
     }
 }

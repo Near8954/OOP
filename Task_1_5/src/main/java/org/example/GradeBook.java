@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.OptionalDouble;
@@ -8,41 +9,56 @@ import java.util.stream.IntStream;
 /**
  * An immutable snapshot of a student's electronic grade book.
  *
- * <p>The curriculum control counts are taken from the MMF assignment table. Forecast methods
- * return {@code false} when the records needed for a forecast are incomplete.</p>
+ * <p>Forecasts use the supplied curriculum plan. Missing future transcript results remain
+ * possible outcomes; missing records needed for a completed session prevent eligibility.</p>
  */
 public final class GradeBook {
     private final boolean tuitionPaid;
     private final int currentSemester;
     private final List<Assessment> assessments;
+    private final CurriculumPlan curriculumPlan;
 
     /**
      * Creates an immutable grade-book snapshot for the current semester.
      *
-     * <p>Past semester transcript controls must have results. Assignments, tests, and colloquia
-     * are tracking items and may remain pending because they do not produce transcript grades.</p>
+     * <p>Assignments, tests, colloquia, and incomplete transcript controls may remain pending.
+     * Forecast methods require complete results for past semesters where their rules need them.</p>
      *
      * @param tuitionPaid {@code true} if the student pays tuition
      * @param currentSemester current semester from 1 to 8
      * @param assessments controls recorded in the grade book, including planned future controls
-     * @throws IllegalArgumentException if the semester is invalid or a past transcript control
-     *         has no result
+     * @throws IllegalArgumentException if the semester is invalid or assessment counts exceed
+     *         the curriculum plan
      * @throws NullPointerException if {@code assessments} or one of its elements is {@code null}
      */
     public GradeBook(boolean tuitionPaid, int currentSemester, List<Assessment> assessments) {
+        this(tuitionPaid, currentSemester, assessments, CurriculumPlan.standardMmf());
+    }
+
+    /**
+     * Creates an immutable grade-book snapshot using a configurable curriculum plan.
+     *
+     * <p>Assignments, tests, colloquia, and incomplete transcript controls may remain pending.
+     * Forecast methods require complete results for past semesters where their rules need them.</p>
+     *
+     * @param tuitionPaid {@code true} if the student pays tuition
+     * @param currentSemester current semester from 1 to 8
+     * @param assessments controls recorded in the grade book
+     * @param curriculumPlan expected control counts for this student's curriculum
+     * @throws IllegalArgumentException if the semester is invalid or assessment counts exceed
+     *         the plan
+     * @throws NullPointerException if an argument or an assessment is {@code null}
+     */
+    public GradeBook(boolean tuitionPaid, int currentSemester, List<Assessment> assessments,
+                     CurriculumPlan curriculumPlan) {
         if (currentSemester < 1 || currentSemester > 8) {
             throw new IllegalArgumentException("Semester must be between 1 and 8");
         }
         this.tuitionPaid = tuitionPaid;
         this.currentSemester = currentSemester;
         this.assessments = List.copyOf(Objects.requireNonNull(assessments, "assessments"));
-        boolean incompletePastTranscriptControl = this.assessments.stream()
-                .anyMatch(assessment -> assessment.semester() < currentSemester
-                        && (assessment.type().isGraded() || assessment.type().isPassFail())
-                        && !assessment.isCompleted());
-        if (incompletePastTranscriptControl) {
-            throw new IllegalArgumentException("Past transcript controls must be completed");
-        }
+        this.curriculumPlan = Objects.requireNonNull(curriculumPlan, "curriculumPlan");
+        validateAssessmentCounts();
     }
 
     /**
@@ -97,15 +113,16 @@ public final class GradeBook {
     /**
      * Forecasts whether receiving a diploma with honors remains possible.
      *
-     * <p>The curriculum must include all graded transcript controls and ordinary credits. No
-     * completed transcript grade may be satisfactory or failed, every ordinary credit must be
-     * passed, the thesis defense must be excellent, and at least 75 percent of transcript grades
-     * must be excellent or still pending.</p>
+     * <p>All previous semester transcript results must be recorded. Current and future controls
+     * need not be complete: missing or pending grades count as outcomes that may still become
+     * excellent. No completed grade may be satisfactory or failed, every completed ordinary credit
+     * must be passed, a completed thesis defense must be excellent, and at least 75 percent of all
+     * planned numerical transcript grades must be excellent or still attainable.</p>
      *
      * @return {@code true} if a valid diploma with honors remains attainable
      */
     public boolean canGetHonorsDiploma() {
-        if (!hasCompleteHonorsCurriculum()) {
+        if (!hasCompletePastTranscript()) {
             return false;
         }
         boolean anyCompletedViolation = assessments.stream()
@@ -120,14 +137,20 @@ public final class GradeBook {
         if (anyCompletedViolation) {
             return false;
         }
-        List<Assessment> finalGrades = assessments.stream()
-                .filter(assessment -> assessment.type().isGraded())
-                .toList();
-        long possibleExcellent = finalGrades.stream()
-                .filter(assessment -> assessment.grade() == Grade.EXCELLENT
-                        || assessment.grade() == Grade.PENDING)
+        int expectedFinalGrades = Arrays.stream(ControlType.values())
+                .filter(ControlType::isGraded)
+                .mapToInt(curriculumPlan::totalExpectedCount)
+                .sum();
+        if (expectedFinalGrades == 0) {
+            return false;
+        }
+        long completedNonExcellentGrades = assessments.stream()
+                .filter(assessment -> assessment.type().isGraded()
+                        && assessment.isCompleted()
+                        && assessment.grade() != Grade.EXCELLENT)
                 .count();
-        return possibleExcellent * 4 >= finalGrades.size() * 3L;
+        long possibleExcellent = expectedFinalGrades - completedNonExcellentGrades;
+        return possibleExcellent * 4 >= expectedFinalGrades * 3L;
     }
 
     /**
@@ -167,8 +190,8 @@ public final class GradeBook {
      * @return {@code true} if both control types have their expected counts
      */
     private boolean hasCompleteExamSession(int semester) {
-        return hasExpectedCount(ControlType.EXAM, semester)
-                && hasExpectedCount(ControlType.DIFFERENTIATED_CREDIT, semester);
+        return hasCompleteControlResults(ControlType.EXAM, semester)
+                && hasCompleteControlResults(ControlType.DIFFERENTIATED_CREDIT, semester);
     }
 
     /**
@@ -178,35 +201,56 @@ public final class GradeBook {
      * @return {@code true} if the ordinary-credit count matches the curriculum
      */
     private boolean hasExpectedCountForCredits(int semester) {
-        return hasExpectedCount(ControlType.CREDIT, semester);
+        return hasCompleteControlResults(ControlType.CREDIT, semester);
     }
 
     /**
-     * Compares the recorded count of a control type with the curriculum table.
+     * Checks that the recorded count matches the plan and every recorded control is complete.
      *
      * @param type control type to count
      * @param semester semester to inspect
-     * @return {@code true} if the recorded and expected counts match
+     * @return {@code true} if all expected controls are present and complete
      */
-    private boolean hasExpectedCount(ControlType type, int semester) {
-        long recordedCount = assessments.stream()
+    private boolean hasCompleteControlResults(ControlType type, int semester) {
+        List<Assessment> controls = assessments.stream()
                 .filter(assessment -> assessment.type() == type
                         && assessment.semester() == semester)
-                .count();
-        return recordedCount == type.expectedCount(semester);
+                .toList();
+        return controls.size() == curriculumPlan.expectedCount(type, semester)
+                && controls.stream().allMatch(Assessment::isCompleted);
     }
 
     /**
-     * Checks that all graded transcript controls and ordinary credits are present in all semesters.
+     * Checks that every transcript result in semesters before the current one is present.
      *
-     * @return {@code true} if the honors forecast has a complete set of relevant controls
+     * @return {@code true} if the recorded history is complete
      */
-    private boolean hasCompleteHonorsCurriculum() {
-        return IntStream.rangeClosed(1, 8).allMatch(semester ->
-                hasExpectedCount(ControlType.EXAM, semester)
-                        && hasExpectedCount(ControlType.DIFFERENTIATED_CREDIT, semester)
-                        && hasExpectedCount(ControlType.PRACTICE_DEFENSE, semester)
-                        && hasExpectedCount(ControlType.THESIS_DEFENSE, semester)
-                        && hasExpectedCountForCredits(semester));
+    private boolean hasCompletePastTranscript() {
+        return IntStream.rangeClosed(1, currentSemester - 1).allMatch(semester ->
+                Arrays.stream(ControlType.values())
+                        .filter(type -> type.isGraded() || type.isPassFail())
+                        .allMatch(type -> hasCompleteControlResults(type, semester)));
+    }
+
+    /**
+     * Checks that recorded controls do not exceed the plan.
+     *
+     * @throws IllegalArgumentException if an assessment count exceeds the plan
+     */
+    private void validateAssessmentCounts() {
+        for (int semester = 1; semester <= 8; semester++) {
+            int semesterNumber = semester;
+            for (ControlType type : ControlType.values()) {
+                long recordedCount = assessments.stream()
+                        .filter(assessment -> assessment.type() == type
+                                && assessment.semester() == semesterNumber)
+                        .count();
+                if (recordedCount > curriculumPlan.expectedCount(type, semester)) {
+                    throw new IllegalArgumentException(
+                            "Assessment count exceeds the curriculum plan for " + type
+                                    + " in semester " + semester);
+                }
+            }
+        }
     }
 }

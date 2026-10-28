@@ -30,11 +30,10 @@ public final class Assessment {
         }
         this.type = Objects.requireNonNull(type, "type");
         this.grade = Objects.requireNonNull(grade, "grade");
-        if (type.isGraded() && grade != Grade.PENDING && grade.points() < 2) {
+        if (type.isGraded() && grade != Grade.PENDING && !grade.hasNumericValue()) {
             throw new IllegalArgumentException("A graded control requires a numerical grade");
         }
-        if (type.isPassFail() && grade != Grade.PASS && grade != Grade.NOT_PASSED
-                && grade != Grade.PENDING) {
+        if (type.isPassFail() && grade != Grade.PENDING && !grade.isRegularCreditGrade()) {
             throw new IllegalArgumentException("An ordinary credit requires a pass/fail result");
         }
         if (!type.isGraded() && !type.isPassFail() && grade != Grade.PENDING) {

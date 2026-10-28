@@ -40,6 +40,24 @@ public enum Grade {
     }
 
     /**
+     * Checks whether this grade represents a numerical assessment result.
+     *
+     * @return {@code true} for numerical grades from two to five
+     */
+    public boolean hasNumericValue() {
+        return this == EXCELLENT || this == GOOD || this == SATISFACTORY || this == FAIL;
+    }
+
+    /**
+     * Checks whether this grade is a result for an ordinary pass/fail credit.
+     *
+     * @return {@code true} for {@link #PASS} or {@link #NOT_PASSED}
+     */
+    public boolean isRegularCreditGrade() {
+        return this == PASS || this == NOT_PASSED;
+    }
+
+    /**
      * Checks whether this result represents an unsuccessful assessment.
      *
      * @return {@code true} for {@link #FAIL} and {@link #NOT_PASSED}
